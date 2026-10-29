@@ -1,5 +1,7 @@
 use std::io::{self, Read, Write};
-use crossterm::terminal::{enable_raw_mode, disable_raw_mode};
+mod modules;
+
+use crate::modules::raw_mode::{disable_raw_mode, enable_raw_mode};
 
 fn main() {
     enable_raw_mode().unwrap();
