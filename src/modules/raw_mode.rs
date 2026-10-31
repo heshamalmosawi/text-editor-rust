@@ -46,7 +46,7 @@ pub fn enable_raw_mode() -> Result<()> {
     // Keep it last - set the original mode only if we were able to switch to the raw mode
     *original_mode = Some(original_mode_ios);
 
-    return Ok(());
+    Ok(())
 }
 
 pub fn disable_raw_mode() -> Result<()> {

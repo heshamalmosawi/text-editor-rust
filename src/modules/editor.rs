@@ -10,7 +10,7 @@ impl Editor {
         let _raw = RawModeGuard::new()?;
         let mut stdout = io::stdout().lock();
 
-        for byte in io::stdin().bytes() {
+        for byte in io::stdin().lock().bytes() {
             let byte = byte?;
             stdout.write_all(&[byte])?;
             stdout.flush()?;
