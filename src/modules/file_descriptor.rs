@@ -1,6 +1,6 @@
 use std::{
     fs, io,
-    os::fd::{IntoRawFd, RawFd},
+    os::fd::{IntoRawFd as _, RawFd},
 };
 
 #[derive(Debug)]

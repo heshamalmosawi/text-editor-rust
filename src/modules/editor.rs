@@ -1,4 +1,4 @@
-use std::io::{self, Read, Result, Write};
+use std::io::{self, Read as _, Result, Write as _};
 
 use crate::modules::raw_mode::RawModeGuard;
 
