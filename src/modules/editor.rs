@@ -1,30 +1,24 @@
-use std::io::{self, Read, Write};
+use std::io::{self, Read, Result, Write};
 
-use crate::modules::raw_mode::{disable_raw_mode, enable_raw_mode};
+use crate::modules::raw_mode::RawModeGuard;
 
-pub struct Editor {}
+#[derive(Default)]
+pub struct Editor;
 
 impl Editor {
-    pub fn default() -> Self {
-        Self {}
-    }
+    pub fn run(&self) -> Result<()> {
+        let _raw = RawModeGuard::new()?;
+        let mut stdout = io::stdout().lock();
 
-    pub fn run(&self) {
-        enable_raw_mode().unwrap();
-        for b in io::stdin().bytes() {
-            match b {
-                Ok(b) => {
-                    let c = b as char;
-                    print!("{}", c);
-                    io::stdout().flush().unwrap();
+        for byte in io::stdin().bytes() {
+            let byte = byte?;
+            stdout.write_all(&[byte])?;
+            stdout.flush()?;
 
-                    if c == 'q' {
-                        break;
-                    }
-                }
-                Err(err) => println!("Error: {}", err),
+            if byte == b'q' {
+                break;
             }
         }
-        disable_raw_mode().unwrap();
+        Ok(())
     }
 }

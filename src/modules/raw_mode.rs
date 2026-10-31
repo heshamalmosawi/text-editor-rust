@@ -11,6 +11,21 @@ use crate::modules::file_descriptor::tty_fd;
 
 static TERMINAL_MODE_PRIOR_RAW_MODE: Mutex<Option<Termios>> = Mutex::new(None);
 
+pub struct RawModeGuard;
+
+impl RawModeGuard {
+    pub fn new() -> Result<Self> {
+        enable_raw_mode()?;
+        Ok(Self)
+    }
+}
+
+impl Drop for RawModeGuard {
+    fn drop(&mut self) {
+        let _ = disable_raw_mode();
+    }
+}
+
 pub fn is_raw_mode_enabled() -> bool {
     return TERMINAL_MODE_PRIOR_RAW_MODE.lock().unwrap().is_some();
 }
